@@ -1,4 +1,5 @@
 import pickle
+import os
 import streamlit as st
 import requests
 
@@ -158,7 +159,17 @@ def recommend(movie):
 @st.cache_data
 def load_data():
     movies = pickle.load(open('artificats/movie_list.pkl', 'rb'))
-    similarity = pickle.load(open('artificats/similarity.pkl', 'rb'))
+
+    similarity_path = 'artificats/similarity.pkl'
+    if os.path.exists(similarity_path):
+        similarity = pickle.load(open(similarity_path, 'rb'))
+    else:
+        from sklearn.feature_extraction.text import CountVectorizer
+        from sklearn.metrics.pairwise import cosine_similarity
+        cv = CountVectorizer(max_features=5000, stop_words='english')
+        vectors = cv.fit_transform(movies['tags']).toarray()
+        similarity = cosine_similarity(vectors)
+
     return movies, similarity
 
 
