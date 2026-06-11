@@ -158,7 +158,7 @@ def recommend(movie):
 
 @st.cache_data
 def load_data():
-    movies = pickle.load(open('artificats/movie_list.pkl', 'rb'))
+    movies = pickle.load(open('artificats/movie_list2.pkl', 'rb'))
 
     similarity_path = 'artificats/similarity.pkl'
     if os.path.exists(similarity_path):
